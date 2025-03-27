@@ -1,50 +1,52 @@
 # products/views.py
+
 # from django_filters import rest_framework as filters
-# from rest_framework import generics, viewsets
+# from rest_framework import viewsets
 # from .models import Product
 # from .serializers import ProductSerializer
-
 # from django.shortcuts import render
 # from rest_framework.filters import SearchFilter
+# from django_filters.rest_framework import DjangoFilterBackend
 
-
-# class ProductListView(generics.ListCreateAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-
-# class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Product.objects.all()
-#     serializer_class = ProductSerializer
-
-# def product_list_page(request):
-#     products = Product.objects.filter(available=True)  # Показываем только доступные товары
-#     return render(request, 'products/product_list.html', {'products': products})
-
+# from rest_framework.generics import ListAPIView
 
 
 # class ProductFilter(filters.FilterSet):
-#     speed_count =  filters.BaseInFilter(field_name="speed_count", lookup_expr="in")
+#     speed_count = filters.BaseInFilter(field_name="speed_count", lookup_expr="in")
 
 #     class Meta:
 #         model = Product
 #         fields = ['speed_count']
 
+
 # class ProductViewSet(viewsets.ModelViewSet):
 #     queryset = Product.objects.all()
 #     serializer_class = ProductSerializer
-#     filter_backends = [filters.DjangoFilterBackend]
+#     filter_backends = [DjangoFilterBackend, SearchFilter]
 #     filterset_class = ProductFilter
+#     search_fields = ['name', 'description']
+
+
+# def product_list_page(request):
+#     products = Product.objects.filter(available=True)
+#     return render(request, 'products/product_list.html', {'products': products})
+
+# class ProductListView(ListAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+    # ----------------------------------------------
 
 from django_filters import rest_framework as filters
 from rest_framework import viewsets
-from .models import Product
-from .serializers import ProductSerializer
-from django.shortcuts import render
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView
+from django.shortcuts import render
 
+from .models import Product, ProductImage
+from .serializers import ProductSerializer
 
 class ProductFilter(filters.FilterSet):
     speed_count = filters.BaseInFilter(field_name="speed_count", lookup_expr="in")
@@ -53,14 +55,27 @@ class ProductFilter(filters.FilterSet):
         model = Product
         fields = ['speed_count']
 
-
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = ProductFilter
     search_fields = ['name', 'description']
+    parser_classes = (MultiPartParser, FormParser)  # Для загрузки файлов
 
+    def create(self, request, *args, **kwargs):
+        """Создание товара с несколькими изображениями"""
+        product_serializer = ProductSerializer(data=request.data)
+        if product_serializer.is_valid():
+            product = product_serializer.save()
+            
+            # Сохранение изображений
+            images = request.FILES.getlist('images')
+            for image in images:
+                ProductImage.objects.create(product=product, image=image)
+
+            return Response(product_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def product_list_page(request):
     products = Product.objects.filter(available=True)
