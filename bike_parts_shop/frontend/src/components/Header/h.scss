@@ -1,0 +1,329 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* outline: 1px solid red; */
+  
+  }
+  
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  
+  .burger-checkbox {
+    position: absolute;
+    appearance: none;
+  }
+  
+  .burger {
+    //right: 350%;
+    position: relative;
+    cursor: pointer;
+    display: block;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    // background: green;
+  
+    // position: absolute;
+    // top: 10px;
+    // right: 10px;
+    // width: 40px;
+    // height: 40px;
+    // background: black;
+    // color: white;
+    // text-align: center;
+    // line-height: 40px;
+    // border-radius: 5px;
+    // cursor: pointer;
+  }
+  
+  .burger::before,
+  .burger::after {
+    margin-left: 7px;
+    left: 0;
+    content: '';
+    position: absolute;
+    display: block;
+    width: 70%;
+    height: 3px;
+    border-radius: 50px;
+    background: #ffffff;
+  }
+  
+  .burger::before {
+    margin-top: 10px;
+    top: 0;
+    box-shadow: 0 14px 0 #ffffff;
+    transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
+  }
+  
+  .burger::after {
+    margin-bottom: 10px;
+    bottom: 0;
+    transition: bottom .3s .15s, transform .3s;
+  }
+  
+  .burger-checkbox:checked+.burger::before {
+    margin-top: 0px;
+    top: 23px;
+    transform: rotate(45deg);
+    box-shadow: 0 10px 0 rgba(0, 0, 0, 0);
+    transition: box-shadow .15s, top .3s, transform .3s .15s;
+  }
+  
+  .burger-checkbox:checked+.burger::after {
+    margin-top: 0px;
+    bottom: 15px;
+    transform: rotate(-45deg);
+    transition: bottom .3s, transform .3s .15s;
+  }
+  
+  .open {
+    display: flex !important;
+  }
+  
+  .menu-list {
+    left: 0;
+    position: absolute;
+    gap: px;
+    /* padding: 42px 0; */
+    margin: 10;
+    background: #00000062;
+    
+    list-style-type: none;
+    transition: .3s;
+    /* width: 300px; */
+    // border-radius: 5%;
+    // border-color: #5612deea;
+    // justify-content: center;
+    // padding-inline: 10px;
+    flex-direction: column;
+
+    display: none;
+    // opacity: 0;
+    // visibility: visible;
+  }
+  
+//   .menu-list.open {
+//     display: block; /* Показываем, когда открыт */
+// }
+
+  .menu-item {
+    display: block;
+    padding: 8px;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .menu-item:hover {
+    background: rgba(255, 255, 255, .2)
+  }
+  
+  .burger-checkbox:checked~.menu-list {
+    transform: translateX(0);
+  }
+  
+  /* .menu-list2{
+    justify-content: center;
+  } */
+  
+  .menu-list2dv {
+    /* margin: -6.4em 0% 0% 10%; */
+  }
+  
+  .menu-list2,
+  li {
+    display: inline;
+    /* list-style-type: none;
+      padding-right: 5%;
+      padding-top: 2em; */
+  }
+  
+  .menu-item2 {
+    display: block;
+  
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    text-decoration: none;
+    display: inline;
+  }
+
+.header-content {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 15px 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    padding: 20px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #fff;
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+  
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 8px;
+    padding-bottom: 1px;
+  }
+
+  .wrapper2 {
+
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    /* padding-inline: 8px;
+    padding-bottom: 1px;
+    display: inline; */
+  }
+
+  /* Стиль для элементов с частичной границей */
+  .header-content-border-bottom {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 5px;
+    /* Отступ над границей */
+  }
+  
+  /* Частичная граница снизу */
+  .header-content-border-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 25%;
+    /* Начало закрашивания (25% от ширины элемента) */
+    height: 2px;
+    /* Толщина границы */
+    width: 50%;
+    /* Длина границы (50% ширины элемента) */
+    background: rgb(255, 255, 255);
+    /* Цвет границы */
+  }
+
+  header a {
+    color: #FFFFFF;
+    text-decoration: none;
+    // margin: 0 15px;
+    font-weight: bold;
+  }
+  
+  
+
+
+.navbar {
+  
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 15px 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+  
+    display: flex;
+    justify-content: space-between;
+    /* padding: 20px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #fff; */
+  }
+  
+  .navbar.hidden {
+    transform: translateY(-300%);
+    /* Скрываем navbar */
+  }
+
+  /* Spacer элемент для Observer */
+  .spacer {
+    height: 60px;
+    /* Высота маленькая, чтобы не было видно */
+  
+  }
+
+//   ----------------------------------------------------------------------------
+
+
+  @media (min-width: 769px) {
+    .menu {
+      display: none;
+    }
+
+    .wrapper2 {
+      display: block;
+    }
+  
+    .menu-list2 {
+      display: block;
+      display: flex;
+    gap: 35px; 
+    }
+  
+    .vermob {
+      display: none;
+    }
+  
+    .verpc {
+      display: block;
+    }
+  
+    .gear3 {
+      bottom: -70px;
+      left: 400px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .menu {
+      display: block;
+    }
+  
+    .menu-list2 {
+      display: none;
+    }
+  
+    .wellcom {
+      text-align: left;
+    }
+  
+    .vermob {
+      display: block;
+    }
+  
+    .verpc {
+      display: none;
+    }
+  
+    .gear3 {
+      bottom: -70px;
+      left: 245px;
+    }
+  
+  }
