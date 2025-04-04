@@ -2,7 +2,7 @@
 
 <template>
   <div class="product-list-container">
-    <!-- <ItemFilters @apply-filters="handleFilters" /> -->
+    <ItemFilters @apply-filters="handleFilters" />
 
     <div v-if="loading" class="loading">Загрузка товаров...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
@@ -27,9 +27,10 @@
 <script>
 import axios from "axios";
 import ItemCard from "@/components/ShopPage/ItemCard.vue";
+import ItemFilters from "./ItemFilters.vue";
 
 export default {
-  components: { ItemCard },
+  components: { ItemCard, ItemFilters },
   props: {
     filters: {
       type: Object,

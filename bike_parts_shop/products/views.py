@@ -10,6 +10,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView
 from django.shortcuts import render
 
+from django.views.generic import DetailView
 from .models import Product, ProductImage
 from .serializers import ProductSerializer
 
@@ -50,3 +51,9 @@ def product_list_page(request):
 class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = "products/product_detail.html"
+    context_object_name = "product"  
+

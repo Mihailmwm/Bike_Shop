@@ -1,16 +1,7 @@
 # orders/admin.py
-# from django.contrib import admin
-# from .models import OrderStatus, PaymentMethods, DeliveryMethods, Orders, OrderItems, Reviews
-
-# admin.site.register(OrderStatus)
-# admin.site.register(PaymentMethods)
-# admin.site.register(DeliveryMethods)
-# admin.site.register(Orders)
-# admin.site.register(OrderItems)
-# admin.site.register(Reviews)
-
 from django.contrib import admin
 from .models import OrderStatus, PaymentMethods, DeliveryMethods, Orders, OrderItems, Reviews
+# from products.models import Product
 
 @admin.register(OrderStatus)
 class OrderStatusAdmin(admin.ModelAdmin):
@@ -56,7 +47,7 @@ class OrderItemsAdmin(admin.ModelAdmin):
 
 @admin.register(Reviews)
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ("user", "product", "rating", "comment_preview")
+    list_display = ("user", "product", "rating", "comment_preview", 'created_at')
     list_filter = ("rating",)
     search_fields = ("user__username", "product__name", "comment")
     # filter_horizontal = ("product",)
@@ -64,3 +55,11 @@ class ReviewsAdmin(admin.ModelAdmin):
     @admin.display(description="Комментарий (предпросмотр)")
     def comment_preview(self, obj):
         return obj.comment[:50] + "..." if len(obj.comment) > 50 else obj.comment
+
+
+# @admin.register(ProductPaymentMethods)
+# class ProductPaymentMethodsAdmin(admin.ModelAdmin):
+#  list_display = ("product",)
+# list_filter = ("product",)
+# raw_id_fields = ("product",)  # Оставляем raw_id_fields для удобства
+# filter_horizontal = ("payment_method",)  # Используем filter_horizontal для ManyToMany поля
