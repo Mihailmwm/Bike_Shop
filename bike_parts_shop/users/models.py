@@ -12,7 +12,7 @@ class UserRoles(models.Model):
     def __str__(self):
         return self.name
 
-
+# profile models on to one 
 class User(AbstractUser):
     groups = models.ManyToManyField(
         Group,

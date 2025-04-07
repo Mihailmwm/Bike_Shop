@@ -37,15 +37,28 @@ export default {
 
     const selectedFilters = reactive({ speed_count: [] });
 
-
-    const applyFilters = () => {
-      console.log("Selected Filters:", selectedFilters); // Проверьте в консоли браузера
-      emit("apply-filters", { ...selectedFilters });
+    const toggleCategory = (index) => {
+      categories.value[index].open = !categories.value[index].open;
     };
 
-    return { categories, selectedFilters, applyFilters };
+    const applyFilters = () => {
+      // Создаем новый объект для передачи
+      const filtersToEmit = {
+        speed_count: [...selectedFilters.speed_count]
+      };
+      console.log("Отправляем фильтры:", filtersToEmit);
+      emit("apply-filters", filtersToEmit);
+    };
+
+    return { 
+      categories, 
+      selectedFilters, 
+      applyFilters, 
+      toggleCategory 
+    };
   }
 };
+
 </script>
 
 
@@ -56,6 +69,16 @@ export default {
 
 
 <style scoped>
+
+.filca {
+  /* padding-right: 7vw;
+  padding-left: 7vw;
+  padding-top: 8em;
+    display: flex; */
+}
+
+
+
 .filters-container {
   padding: 1rem;
   background: #f8f9fa;
