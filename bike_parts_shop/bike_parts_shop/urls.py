@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/', include('products.urls')),  # Проверьте, что API доступно
     path('products/', include('products.urls')),
     path("product_list_page", product_list_page, name="home"), 
+    path('api/contact/', include('contact.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
