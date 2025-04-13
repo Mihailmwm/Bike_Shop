@@ -10,6 +10,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django.shortcuts import render
 
+from rest_framework.response import Response
+from rest_framework import status
+
 from django.views.generic import DetailView
 from .models import Product, ProductImage
 from .serializers import ProductSerializer
@@ -45,12 +48,17 @@ class ProductViewSet(viewsets.ModelViewSet):
         return Response(product_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 def product_list_page(request):
-    products = Product.objects.filter(available=True)
+    # products = Product.objects.filter(available=True)
+    # return render(request, 'products/product_list.html', {'products': products})
+    products = Product.objects.filter(available=True).exclude(category__name="Архив").order_by('-price')
     return render(request, 'products/product_list.html', {'products': products})
 
 class ProductListView(ListAPIView):
-    queryset = Product.objects.all()
+    # queryset = Product.objects.all()
+    # serializer_class = ProductSerializer
+    queryset = Product.objects.filter(available=True).exclude(category__name="Архив").order_by('-created_at')
     serializer_class = ProductSerializer
+
 
 # class ProductDetailView(DetailView):
 #     model = Product

@@ -1,5 +1,8 @@
 # # products/admin.py
 
+from django.db.models import Count, Avg, Sum
+from django.template.response import TemplateResponse
+
 from django.contrib import admin
 from django.utils.html import format_html
 from .models import Product, Category, ProductImage
@@ -43,9 +46,78 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ("name", "description")
     actions = ["duplicate_products", "download_pdf_link"]
     inlines = [ProductImageInline]
+    change_list_template = "admin/products/product_changelist.html"
     
     # Разрешаем редактирование поля created_at в админке
     readonly_fields = []
+
+    def changelist_view(self, request, extra_context=None):
+        # Обработка дублирования
+        if "duplicate" in request.GET:
+            product_id = request.GET.get("duplicate")
+            try:
+                product = Product.objects.get(id=product_id)
+                product.pk = None
+                product.name += " (копия)"
+                product.save()
+                self.message_user(request, f'Товар "{product.name}" успешно скопирован.')
+            except Product.DoesNotExist:
+                self.message_user(request, "Товар не найден", level='error')
+
+        # Добавляем статистику
+        stats = Product.objects.aggregate(
+            avg_price=Avg('price'),
+            total_value=Sum('price')  # Можно заменить на точный stock * price если нужно
+        )
+
+        category_counts = Product.objects.values('category__name').annotate(
+            count=Count('id')
+        ).order_by('-count')
+
+        extra_context = extra_context or {}
+        extra_context.update({
+            'avg_price': stats['avg_price'],
+            'total_value': stats['total_value'],
+            'category_counts': category_counts,
+        })
+
+        return super().changelist_view(request, extra_context=extra_context)
+
+
+
+
+    # def changelist_view(self, request, extra_context=None):
+    # # Обработка дублирования
+    #     if "duplicate" in request.GET:
+    #         product_id = request.GET.get("duplicate")
+    #         try:
+    #             product = Product.objects.get(id=product_id)
+    #             product.pk = None
+    #             product.name += " (копия)"
+    #             product.save()
+    #             self.message_user(request, f'Товар "{product.name}" успешно скопирован.')
+    #         except Product.DoesNotExist:
+    #             self.message_user(request, "Товар не найден", level='error')
+
+    #     # Добавляем статистику
+    #     stats = Product.objects.aggregate(
+    #         avg_price=Avg('price'),
+    #         total_value=Sum('price' * Sum('stock'))
+    # )
+
+    #     category_counts = Product.objects.values('category__name').annotate(
+    #         count=Count('id')
+    #     ).order_by('-count')
+
+    #     extra_context = extra_context or {}
+    #     extra_context.update({
+    #         'avg_price': stats['avg_price'],
+    #         'total_value': stats['total_value'],
+    #         'category_counts': category_counts,
+    #     })
+
+    #     return super().changelist_view(request, extra_context=extra_context)
+
 
     def get_urls(self):
         urls = super().get_urls()
@@ -119,18 +191,22 @@ class ProductAdmin(admin.ModelAdmin):
         )
     
 
-    def changelist_view(self, request, extra_context=None):
-        if "duplicate" in request.GET:
-            product_id = request.GET.get("duplicate")
-            product = Product.objects.get(id=product_id)
-            product.pk = None
-            product.name += " (копия)"
-            product.save()
-            self.message_user(request, f'Товар "{product.name}" успешно скопирован.')
-        return super().changelist_view(request, extra_context)
+    # def changelist_view(self, request, extra_context=None):
+    #     if "duplicate" in request.GET:
+    #         product_id = request.GET.get("duplicate")
+    #         product = Product.objects.get(id=product_id)
+    #         product.pk = None
+    #         product.name += " (копия)"
+    #         product.save()
+    #         self.message_user(request, f'Товар "{product.name}" успешно скопирован.')
+    #     return super().changelist_view(request, extra_context)
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name",)
     search_fields = ("name",)
+
+@admin.register(ProductImage)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ('product', 'image')

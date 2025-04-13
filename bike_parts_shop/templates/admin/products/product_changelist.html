@@ -1,0 +1,19 @@
+{% extends "admin/change_list.html" %}
+
+{% block content_title %}
+  {{ block.super }}
+  <div style="margin-top: 20px; padding: 10px; background-color: #1a1a1a; color: #fff;">
+    <h3> Статистика товаров</h3>
+    <p>Средняя цена: <strong>{{ avg_price }} ₽</strong></p>
+    <p>Общая стоимость всех товаров на складе: <strong>{{ total_value }} ₽</strong></p>
+
+    <h4> Товары по категориям:</h4>
+    <ul>
+      {% for item in category_counts %}
+        <li>{{ item.category__name }} — {{ item.count }} шт.</li>
+      {% empty %}
+        <li>Нет товаров </li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endblock %}
