@@ -38,20 +38,9 @@
           <p class="description">{{ product.description }}</p>
           <p class="price">{{ product.price }} ₽</p>
           <button class="buy-button" @click="addToCart">Купить</button>
+          <router-link :to="`/product/${product.id}`" class="details-button">Подробнее</router-link>
         </div>
       </div>
-
-
-      <!-- Индикаторы (точки) -->
-
-      <!-- <div class="dots">
-        <span
-          v-for="(img, index) in product.images"
-          :key="index"
-          :class="['dot', { active: index === currentIndex }]"
-          @click="setImage(index)"
-        ></span>
-      </div> -->
     </div>
   </div>
 </template>

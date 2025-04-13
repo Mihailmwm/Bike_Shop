@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Дашборд заказов{% endblock %}
+
+{% block content %}
+<h1>📊 Дашборд заказов</h1>
+
+<div style="margin: 20px 0;">
+  <strong>💰 Общая сумма продаж:</strong> {{ total_sales }} ₽ <br>
+  <strong>📦 Всего заказов:</strong> {{ total_orders }} <br>
+  <strong>👤 Уникальных пользователей:</strong> {{ unique_users }}
+</div>
+
+<canvas id="salesChart" width="400" height="150"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('salesChart').getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: {{ daily_sales|pluck:"date"|safe }},
+      datasets: [{
+        label: 'Сумма продаж (₽)',
+        data: {{ daily_sales|pluck:"total"|safe }},
+        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgb(54, 162, 235)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+</script>
+{% endblock %}
+{% load pluck %}

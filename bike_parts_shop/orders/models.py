@@ -5,9 +5,6 @@ from users.models import User
 from products.models import Product
 from django.utils import timezone 
 
-# Убираем импорт PaymentMethods в начале файла, чтобы избежать циклического импорта
-# Вместо этого будем использовать строковый импорт в определении ManyToManyField
-
 class OrderStatus(models.Model):
     name = models.CharField(max_length=50, verbose_name="Статус заказа")
 
@@ -41,18 +38,6 @@ class DeliveryMethods(models.Model):
         return self.name
 
 
-# class ProductPaymentMethods(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
-#     payment_method = models.ManyToManyField('PaymentMethods', verbose_name="Способы оплаты")  # Используем строковый импорт для модели PaymentMethods
-
-#     class Meta:
-#         verbose_name = "Способы оплаты для товара"
-#         verbose_name_plural = "Способы оплаты для товаров"
-
-#     def __str__(self):
-#         return f"{self.product.name} - {', '.join([pm.name for pm in self.payment_method.all()])}"  # Показываем все способы оплаты
-
-
 class Orders(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Пользователь", related_name="orders")
     status = models.ForeignKey(OrderStatus, on_delete=models.SET_NULL, null=True, verbose_name="Статус заказа")
@@ -68,17 +53,24 @@ class Orders(models.Model):
 
     def __str__(self):
         return f"Заказ {self.id} - {self.user.username}"
-
+    
+    def get_total_price(self):
+        return sum(item.price * item.quantity for item in self.items.all())
 
 class OrderItems(models.Model):
     order = models.ForeignKey(Orders, related_name="items", on_delete=models.CASCADE, verbose_name="Заказ")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name="Товар")
     quantity = models.PositiveIntegerField(verbose_name="Количество")
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена за единицу")
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Цена за единицу", editable=False)
 
     class Meta:
         verbose_name = "Элемент заказа"
         verbose_name_plural = "Элементы заказов"
+
+    def save(self, *args, **kwargs):
+        if self.product and self.quantity:
+            self.price = self.product.price
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.product.name} - {self.quantity} шт."

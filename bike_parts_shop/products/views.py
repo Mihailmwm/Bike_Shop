@@ -7,7 +7,7 @@ from rest_framework import viewsets
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from django.shortcuts import render
 
 from django.views.generic import DetailView
@@ -52,8 +52,11 @@ class ProductListView(ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class ProductDetailView(DetailView):
-    model = Product
-    template_name = "products/product_detail.html"
-    context_object_name = "product"  
+# class ProductDetailView(DetailView):
+#     model = Product
+#     # template_name = "products/product_detail.html"
+#     context_object_name = "product"  
 
+class ProductDetailView(RetrieveAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer

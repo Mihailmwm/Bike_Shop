@@ -17,6 +17,11 @@
       <hr>
       <p class="price">{{ product.price }} руб.</p>
     </div>
+    <div>
+    <router-link :to="{ name: 'ProductPage', params: { id: product.id } }">
+      Подробнее
+    </router-link>
+  </div>
     <ProductModal v-if="showModal" :product="product" @close="showModal = false" />
   </div>
 </template>

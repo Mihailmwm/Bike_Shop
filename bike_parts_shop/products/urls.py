@@ -11,7 +11,8 @@ router.register(r'products', ProductViewSet)  # Должен автоматич�
 
 urlpatterns = [
     # API маршруты
-    path('api/', include(router.urls)),  
+    path('api/', include(router.urls)), 
+     
 
     # HTML-страница
     path('products/', ProductListView.as_view(), name='product-list'),
