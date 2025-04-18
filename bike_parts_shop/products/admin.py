@@ -44,7 +44,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display_links = ("name",)
     list_filter = ("category", "available", PriceRangeFilter)
     search_fields = ("name", "description")
-    actions = ["duplicate_products", "download_pdf_link"]
+    actions = ["duplicate_products", "download_selected_pdfs"]
     inlines = [ProductImageInline]
     change_list_template = "admin/products/product_changelist.html"
     
@@ -67,7 +67,7 @@ class ProductAdmin(admin.ModelAdmin):
         # Добавляем статистику
         stats = Product.objects.aggregate(
             avg_price=Avg('price'),
-            total_value=Sum('price')  # Можно заменить на точный stock * price если нужно
+            total_value=Sum('price') 
         )
 
         category_counts = Product.objects.values('category__name').annotate(
@@ -132,9 +132,32 @@ class ProductAdmin(admin.ModelAdmin):
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="{product.name}.pdf"'
         
+        # p = canvas.Canvas(response)
+        # p.drawString(100, 750, f"Product: {product.name}")
+        # p.drawString(100, 730, f"Available: {'Yes' if product.available else 'No'}")
+        # p.showPage()
+        # p.save()
+
+        # return response
+
         p = canvas.Canvas(response)
-        p.drawString(100, 750, f"Product: {product.name}")
-        p.drawString(100, 730, f"Available: {'Yes' if product.available else 'No'}")
+    
+        # Путь к шрифту (замените на ваш реальный путь)
+        font_path = r"D:\4 семестр\bike_shop\static\fonts\DejaVuSansBoldOblique.ttf"
+        
+        # Регистрация шрифта
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+        try:
+            pdfmetrics.registerFont(TTFont('DejaVuSansBoldOblique', font_path))
+            p.setFont("DejaVuSansBoldOblique", 12)
+        except Exception as e:
+            print(f"Ошибка загрузки шрифта: {e}")
+            # Fallback на стандартный шрифт, если не удалось загрузить
+            p.setFont("Helvetica", 12)
+        
+        p.drawString(100, 750, f"Продукт: {product.name}")
+        p.drawString(100, 730, f"Доступность: {'Да' if product.available else 'Нет'}")
         p.showPage()
         p.save()
 
@@ -151,14 +174,33 @@ class ProductAdmin(admin.ModelAdmin):
         """Создает и скачивает ZIP с PDF-файлами для выбранных товаров"""
         from io import BytesIO
         import zipfile
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+
+        # Путь к шрифту
+        font_path = r"D:\4 семестр\bike_shop\static\fonts\DejaVuSansBoldOblique..ttf"
+    
+        # Регистрация шрифта
+        try:
+
+            pdfmetrics.registerFont(TTFont('DejaVuSansBoldOblique.', font_path))
+        except Exception as e:
+            print(f"Ошибка загрузки шрифта: {e}")
+
 
         buffer = BytesIO()
         with zipfile.ZipFile(buffer, "w") as zf:
             for product in queryset:
                 pdf_io = BytesIO()
                 p = canvas.Canvas(pdf_io)
-                p.drawString(100, 750, f"Product: {product.name}")
-                p.drawString(100, 730, f"Available: {'Yes' if product.available else 'No'}")
+                
+                try:
+                    p.setFont("DejaVuSansBoldOblique.", 12)
+                except:
+                    p.setFont("Helvetica", 12)
+                
+                p.drawString(100, 750, f"Продукт: {product.name}")
+                p.drawString(100, 730, f"Доступность: {'Да' if product.available else 'Нет'}")
                 p.showPage()
                 p.save()
                 pdf_io.seek(0)
@@ -168,6 +210,23 @@ class ProductAdmin(admin.ModelAdmin):
         response = HttpResponse(buffer, content_type="application/zip")
         response["Content-Disposition"] = 'attachment; filename="products.zip"'
         return response
+
+        # buffer = BytesIO()
+        # with zipfile.ZipFile(buffer, "w") as zf:
+        #     for product in queryset:
+        #         pdf_io = BytesIO()
+        #         p = canvas.Canvas(pdf_io)
+        #         p.drawString(100, 750, f"Product: {product.name}")
+        #         p.drawString(100, 730, f"Available: {'Yes' if product.available else 'No'}")
+        #         p.showPage()
+        #         p.save()
+        #         pdf_io.seek(0)
+        #         zf.writestr(f"{product.name}.pdf", pdf_io.read())
+
+        # buffer.seek(0)
+        # response = HttpResponse(buffer, content_type="application/zip")
+        # response["Content-Disposition"] = 'attachment; filename="products.zip"'
+        # return response
 
     def get_readonly_fields(self, request, obj=None):
         """Разрешает редактирование created_at при изменении объекта"""

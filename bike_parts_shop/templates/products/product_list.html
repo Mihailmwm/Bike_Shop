@@ -1,17 +1,11 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Список товаров</title>
-</head>
-<body>
-    <h1>Список товаров</h1>
-    <ul>
-        {% for product in products %}
-            <li>{{ product.name }} - {{ product.price }} руб.</li>
-        {% empty %}
-            <p>Нет товаров</p>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+<h2>Список товаров</h2>
+<a href="{% url 'product_create' %}"> Добавить товар</a>
+<ul>
+  {% for product in products %}
+    <li>
+      {{ product.name }} — {{ product.price }} ₽
+      [<a href="{% url 'product_edit' product.pk %}"> Редактировать</a>]
+      [<a href="{% url 'product_delete' product.pk %}"> Удалить</a>]
+    </li>
+  {% endfor %}
+</ul>

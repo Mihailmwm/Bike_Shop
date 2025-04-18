@@ -47,10 +47,10 @@ export default {
           <button @click="prevImage">←</button>
           <button @click="nextImage">→</button>
         </div>
+        
+        <p class="description">{{ product.description }}</p>
+        <p class="price">{{ product.price }} ₽</p>
       </div>
-  
-      <p class="description">{{ product.description }}</p>
-      <p class="price">{{ product.price }} ₽</p>
       <button class="buy-button" @click="addToCart">Купить</button>
     </div>
   </template>
@@ -105,6 +105,7 @@ export default {
     max-width: 800px;
     margin: auto;
     border-radius: 20px;
+    padding-top: 8em;
   }
   
   .product-detail h1 {
@@ -113,8 +114,9 @@ export default {
   }
   
   .product-image {
-    width: 100%;
-    max-height: 400px;
+    /* width: 100%; */
+    max-height: 200px;
+    min-height: 200px;
     object-fit: cover;
     border-radius: 12px;
     margin-bottom: 1rem;
@@ -123,27 +125,28 @@ export default {
   .description {
     font-size: 1.1rem;
     margin: 1rem 0;
+    color: white;
   }
   
   .price {
     font-size: 1.5rem;
-    color: #ffcc00;
+    color: #ffffff;
     margin-bottom: 1rem;
   }
   
   .buy-button {
     padding: 0.75rem 2rem;
-    background-color: #ffcc00;
-    color: #000;
-    border: none;
-    border-radius: 10px;
+    background-color: #1f09c200;
+    color: #ffffff;
+    border: 1px solid white;
+    /* border-radius: 10px; */
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
   }
   
   .buy-button:hover {
-    background-color: #ffaa00;
+    background-color: #1e00ff;
   }
   
   .image-slider {

@@ -8,10 +8,12 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
 from rest_framework.response import Response
 from rest_framework import status
+
+from .forms import ProductForm
 
 from django.views.generic import DetailView
 from .models import Product, ProductImage
@@ -68,3 +70,32 @@ class ProductListView(ListAPIView):
 class ProductDetailView(RetrieveAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+
+# ---------------------------------------------------------------------
+
+def product_list(request):
+    products = Product.objects.select_related('category').all()
+    return render(request, 'products/product_list.html', {'products': products})
+
+def product_create(request):
+    form = ProductForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('product_list')
+    return render(request, 'products/product_form.html', {'form': form})
+
+def product_update(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid():
+        form.save()
+        return redirect('product_list')
+    return render(request, 'products/product_form.html', {'form': form})
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('product_list')
+    return render(request, 'products/product_confirm_delete.html', {'product': product})
