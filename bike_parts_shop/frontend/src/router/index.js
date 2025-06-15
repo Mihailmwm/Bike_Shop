@@ -8,6 +8,12 @@ import AppMain from '@/components/AppMain/AppMain.vue';
 
 import ProductPage from "@/components/ShopPage/ProductPage.vue"; 
 
+import Login from '@/components/Login/Login.vue'
+import Register from '@/components/Register/Register.vue'
+// import ProfilePage from '@/pages/ProfilePage.vue' 
+import UserProfile from '@/components/Profile/Profile.vue' 
+
+
 const routes = [
   { path: '/home', name: 'HomePage', component: AppMain },
   { path: '/about', name: 'AboutPage', component: AboutPage },
@@ -17,6 +23,10 @@ const routes = [
 
   // {path: "/product/:id", name: "ProductDetail", component: ProductPage, props: true},
   {path: '/product/:id', name: 'ProductPage', component: ProductPage, props: true },
+
+  { path: '/login',    name: 'Login',    component: Login },
+  { path: '/register', name: 'Register', component: Register },
+  { path: '/profile',  name: 'ProfilePage',  component: UserProfile },
 
 ];
 
