@@ -2,21 +2,30 @@
     <div class="contact-form">
       <h2>Свяжитесь с нами</h2>
       <form @submit.prevent="submitForm">
-        <label>
-          Имя:
-          <input type="text" v-model="form.name" required />
-        </label>
-  
+        <div class="section">
+
+          <label >Имя:<input type="text" v-model="form.name" required />
+          </label>
+        </div>
+
+                <div class="sectionL"></div>
+
+        <div class="section">
         <label>
           Email:
           <input type="email" v-model="form.email"  @blur="validateEmail" :class="{ invalid: emailError }" required />
           <span v-if="emailError" class="error">{{ emailError }}</span>
         </label>
-  
-        <label>
-          Сообщение:
-          <textarea v-model="form.message" required></textarea>
-        </label>
+        </div>
+
+                <div class="sectionL"></div>
+  <div class="section">
+
+    <label>
+      Сообщение:
+      <textarea v-model="form.message" required></textarea>
+    </label>
+  </div>
   
         <button class="otpr" type="submit">Отправить</button>
   
@@ -58,7 +67,7 @@
 
         try {
           console.log("Форма:", this.form);
-          const response = await fetch("http://localhost:8000/api/contact/send/", {
+          const response = await fetch("/api/contact/send/", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(this.form)
@@ -86,6 +95,45 @@
   
   <style scoped>
 
+/* Для всех input и textarea автозаполненных браузером */
+input:-webkit-autofill,
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff00 inset !important; /* прозрачный фон */
+  -webkit-text-fill-color: rgb(51, 119, 182) !important;         /* ваш цвет текста */
+  transition: background-color 9999s ease-out, color 9999s ease-out;
+}
+
+/* Если нужно точечно — для textarea */
+textarea:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff00 inset !important;
+  -webkit-text-fill-color: rgb(51, 119, 182) !important;
+}
+
+
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff00 inset !important; 
+  -webkit-text-fill-color: rgb(51, 119, 182) !important;        
+  transition: background-color 9999s ease-out, color 9999s ease-out;
+}
+
+textarea {
+      /* font-size: 20px; */
+    border: 2px solid white;
+    background-color: #ffffff00;
+    color: rgb(51, 119, 182);
+}
+input {
+    font-size: 20px;
+    border: 2px solid white;
+    background-color: #ffffff00;
+    color: rgb(51, 119, 182);
+}
+input p {
+    color: white;
+}
+
+
   .otpr{
         margin-top: 2vw;
     padding: 1em 2em;
@@ -102,13 +150,47 @@
   .contact-form {
 /*max-width: 600px; */
     /* margin: auto; */
-    margin-top: 5em;
+
+    /* margin-top: 5em;
     display: flex
 ;
     padding: 2rem;
     flex-direction: column;
     align-items: center;
+        height: 100vh; */
+
+            max-width: 400px; 
+    margin: auto; 
+    /* padding: 2rem; */
+    padding-top: 10em;
+    height: 100vh;
   }
+
+.section {
+    border-top: 2px solid white;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;
+}
+
+.sectionL {
+    border-left: 2px solid white;
+    padding: 40px 0;
+}
+.section-title {
+    font-weight: bold;
+    font-size: 18px;
+    text-transform: uppercase;
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    background: black;
+    padding: 5px;
+    color: white;
+}
+
+
+
+
   label {
     display: block;
     margin-bottom: 1rem;

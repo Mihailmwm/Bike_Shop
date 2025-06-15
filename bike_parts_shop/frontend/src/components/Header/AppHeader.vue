@@ -130,31 +130,13 @@
           <div class="relative">
       <template v-if="user">
         <!-- Имя пользователя ― кликабельное -->
-        <span
-          class="cursor-pointer px-3 py-1 hover:bg-gray-700 rounded"
-          @click="toggleMenu"
-        >
-          {{ user.username }}
-        </span>
-        <!-- выпадающее меню -->
-        <div
-          v-if="menuOpen"
-          class="absolute right-0 mt-2 bg-white text-black rounded shadow p-2 min-w-[150px]"
-        >
-          <router-link
-            to="/profile"
-            class="block px-2 py-1 hover:bg-gray-100"
-            @click="menuOpen = false"
-          >
-            Профиль
-          </router-link>
-          <button
-            @click="logout"
-            class="w-full text-left px-2 py-1 hover:bg-gray-100"
-          >
-            Выйти
-          </button>
-        </div>
+         <router-link
+  to="/profile"
+  class="cursor-pointer px-3 py-1 hover:bg-gray-700 rounded"
+>
+  {{ user.username }}
+</router-link>
+
       </template>
 
       <template v-else>

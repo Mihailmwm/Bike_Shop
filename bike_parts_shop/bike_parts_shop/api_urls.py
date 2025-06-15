@@ -1,16 +1,24 @@
-# bike_parts_shop/api_urls.py
-
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from products.views import ProductViewSet, products_by_speed
+from rest_framework.routers                   import DefaultRouter
+from orders.views                             import OrderViewSet
+from products.views import ProductViewSet
+from rest_framework_simplejwt.views           import TokenObtainPairView, TokenRefreshView
+from users.views                              import RegisterView, UserDetailView, LogoutView
+from .api_viewsets                            import CartViewSet, FavoritesViewSet, ContactViewSet, ReviewsViewSet
 
 router = DefaultRouter()
-# Регистрируем CRUD-эндпоинты для модели Product
-router.register(r'products', ProductViewSet, basename='product')
 
-urlpatterns = [
-    # все роуты из ProductViewSet (GET/POST/PUT/PATCH/DELETE /api/products/)
-    path('', include(router.urls)),
-    # наш кастомный эндпоинт для группировки по передаточным числам
-    path('products/by-speed/', products_by_speed, name='products-by-speed'),
-]
+router.register(r'orders',        OrderViewSet,         basename='orders')
+router.register(r'products', ProductViewSet, basename='products')
+# router.register(r'cart',          CartViewSet,          basename='cart')
+# router.register(r'favorites',     FavoritesViewSet,     basename='favorites')
+# router.register(r'reviews',       ReviewsViewSet,       basename='reviews')
+# router.register(r'contact',       ContactViewSet,       basename='contact-send')
+
+# # JWT и auth
+# router.register(r'token',         TokenObtainPairView,  basename='token')
+# router.register(r'token/refresh', TokenRefreshView,     basename='token-refresh')
+# router.register(r'register',      RegisterView,         basename='register')
+# router.register(r'user',          UserDetailView,       basename='current-user')
+# router.register(r'logout',        LogoutView,           basename='logout')
+
+urlpatterns = router.urls

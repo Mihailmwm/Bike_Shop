@@ -48,7 +48,7 @@
 <div class="section_0">
 
 </div>
-        <div class="section" style=" border-top: 2px solid white; ">
+        <div class="section" style=" border-top: 2px solid white; border-bottom: 2px solid white;">
             <img src="@/assets/img/Testing.jpg" alt="Тестирование">
             <div class="section-content">
                 <div class="section-title">// 05 Тестирование</div>
@@ -57,7 +57,9 @@
             </div>
         </div>
 
-        <div class="section" style="">
+        <div class="section" style="border-top: 2px solid white;
+    border-right: 2px solid white;
+    border-bottom: 2px solid white;">
             <img src="@/assets/img/result.jpg" alt="Итог">
             <div class="section-content">
                 <div class="section-title">// 06 Итог</div>

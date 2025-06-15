@@ -20,8 +20,6 @@ const routes = [
   { path: '/process', name: 'ProcessPage', component: ProcessPage },
   { path: '/contact', name: 'ContactPage', component: ContactPage },
   { path: '/shop', name: 'ShopPage', component: ShopPage },
-
-  // {path: "/product/:id", name: "ProductDetail", component: ProductPage, props: true},
   {path: '/product/:id', name: 'ProductPage', component: ProductPage, props: true },
 
   { path: '/login',    name: 'Login',    component: Login },

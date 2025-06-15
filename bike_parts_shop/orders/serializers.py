@@ -2,6 +2,7 @@
 from rest_framework import serializers
 from .models import Orders, OrderItems
 from products.serializers import ProductSerializer
+from .models import Reviews
 
 class OrderItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
@@ -18,3 +19,11 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_total_price(self, obj):
         return obj.get_total_price()
+    
+class ReviewSerializer(serializers.ModelSerializer):
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    product_image = serializers.ImageField(source='product.image', read_only=True)  # если у продукта есть поле image
+
+    class Meta:
+        model = Reviews
+        fields = ['id', 'product', 'product_name', 'product_image', 'rating', 'comment', 'created_at']

@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "Bike Shop API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/register/", "host": ["{{base_url}}"], "path": ["api","register",""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"secret123\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Obtain Token",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/token/", "host": ["{{base_url}}"], "path": ["api","token",""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"secret123\"\n}"
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Refresh Token",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/token/refresh/", "host": ["{{base_url}}"], "path": ["api","token","refresh",""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Get Current User",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/user/", "host": ["{{base_url}}"], "path": ["api","user",""] }
+      }
+    },
+    {
+      "name": "Logout",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/logout/", "host": ["{{base_url}}"], "path": ["api","logout",""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "List Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/products/", "host": ["{{base_url}}"], "path": ["api","products",""] }
+      }
+    },
+    {
+      "name": "List Orders",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/orders/", "host": ["{{base_url}}"], "path": ["api","orders",""] }
+      }
+    },
+    {
+      "name": "Get Cart",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/cart/", "host": ["{{base_url}}"], "path": ["api","cart",""] }
+      }
+    },
+    {
+      "name": "Get Favorites",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/favorites/", "host": ["{{base_url}}"], "path": ["api","favorites",""] }
+      }
+    },
+    {
+      "name": "Get Reviews",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{access_token}}"}] },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{base_url}}/api/reviews/", "host": ["{{base_url}}"], "path": ["api","reviews",""] }
+      }
+    },
+    {
+      "name": "Send Contact Message",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": { "raw": "{{base_url}}/api/contact/send/", "host": ["{{base_url}}"], "path": ["api","contact","send",""] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Иван Иванов\",\n  \"email\": \"ivan@example.com\",\n  \"message\": \"Здравствуйте, интересует наличие товара.\"\n}"
+        }
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url",       "value": "http://localhost:8000" },
+    { "key": "access_token",   "value": "" },
+    { "key": "refresh_token",  "value": "" }
+  ]
+}
