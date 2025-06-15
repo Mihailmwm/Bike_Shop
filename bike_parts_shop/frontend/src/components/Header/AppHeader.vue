@@ -1,3 +1,4 @@
+<!-- AppHeader.vue -->
 <template>
   <div id="app">
     <header>

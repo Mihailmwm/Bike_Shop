@@ -18,7 +18,7 @@
           <textarea v-model="form.message" required></textarea>
         </label>
   
-        <button type="submit">Отправить</button>
+        <button class="otpr" type="submit">Отправить</button>
   
         <p v-if="successMessage" class="success">{{ successMessage }}</p>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
@@ -85,10 +85,29 @@
   </script>
   
   <style scoped>
+
+  .otpr{
+        margin-top: 2vw;
+    padding: 1em 2em;
+    font-size: 1em;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+  }
   .contact-form {
-    max-width: 600px;
-    margin: auto;
+/*max-width: 600px; */
+    /* margin: auto; */
+    margin-top: 5em;
+    display: flex
+;
     padding: 2rem;
+    flex-direction: column;
+    align-items: center;
   }
   label {
     display: block;
@@ -104,6 +123,7 @@
   }
   .error {
     color: red;
+    display: flex;
   }
 
   .invalid {

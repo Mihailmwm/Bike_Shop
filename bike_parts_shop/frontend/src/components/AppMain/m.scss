@@ -131,6 +131,8 @@
       padding: 6vw;
 }
 
+
+
 .container_p H2 {
   color: white;
   margin-bottom: 1em;
@@ -258,14 +260,18 @@ p {
 
   .button {
 
-    margin-top: 8vw;
-    padding: 4vw 4vw;
-    font-size: 5.5vw;
+margin-top: 2vw;
+    padding: 1em 2em;
+    font-size: 1em;
     background: transparent;
-    border: 1px solid white;
+    border: 2px solid white;
     color: white;
     cursor: pointer;
-
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+    text-decoration: none;
     // left: 6vw;
     // position: relative;
   }
@@ -359,13 +365,18 @@ p {
       }
       
     .button {
-      margin-top: 2vw;
-      padding: 1vw 2vw;
-      font-size: 1.5vw;
-      background: transparent;
-      border: 2px solid white;
-      color: white;
-      cursor: pointer;
+  margin-top: 2vw;
+    padding: 1em 2em;
+    font-size: 1em;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    max-width: -moz-fit-content;
+    max-width: fit-content;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+        text-decoration: none;
 
 
         // left: 6vw;

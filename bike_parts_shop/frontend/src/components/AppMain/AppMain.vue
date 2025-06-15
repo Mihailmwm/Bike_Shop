@@ -12,6 +12,14 @@
     </div>
 </section>
 
+<!-- тут должен быть виджет -->
+<section class="gear-section">
+  <div>
+    <!-- ... -->
+    <GearSelector />
+  </div>
+</section>
+
 
 <section class="" id="issa">
 
@@ -146,3 +154,13 @@
 
 
 </template>
+
+<script>
+import GearSelector from "@/components/widget/GearSelector.vue";
+
+export default {
+  components: {
+    GearSelector,
+  },
+};
+</script>

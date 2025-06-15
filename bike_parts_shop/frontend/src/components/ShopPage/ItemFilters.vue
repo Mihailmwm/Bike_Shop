@@ -19,7 +19,7 @@
           </label>
         </div>
       </div>
-      <button @click="applyFilters">Применить</button>
+      <button class="prim" @click="applyFilters">Применить</button>
     </div>
   </div>
 </template>
@@ -70,14 +70,49 @@ export default {
 
 <style scoped>
 
+.prim{
+    margin-top: 2vw;
+    padding: 1em 2em;
+    font-size: 1em;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    cursor: pointer;
+    max-width: fit-content;
+    min-width: fit-content;
+}
 .filca {
+  min-width: fit-content;
   /* padding-right: 7vw;
   padding-left: 7vw;
   padding-top: 8em;
     display: flex; */
 }
+.filters h2,h3{
+  font-family: "Helvetica", sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+}
 
+.filca p{
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255, 0, 0);
+}
 
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 1em;
+
+    font-family: "Montserrat", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: rgb(255 255 255);
+}
 
 .filters-container {
   padding: 1rem;
@@ -150,9 +185,15 @@ export default {
   justify-content: space-between;
   padding: 0.5rem 0;
   cursor: pointer;
-  font-weight: 600;
-  color: #2c3e50;
+  font-family: "Helvetica", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: rgb(255, 255, 255);
+  /* font-weight: 600;
+  color: #ffffff; */
 }
+
+
 
 .category-header:hover {
   color: #1a73e8;
