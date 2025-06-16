@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="orders-container">
     <h3 class="orders-title">Ваши заказы</h3>
     <div v-if="!orders.length" class="no-orders">У вас ещё нет заказов.</div>
@@ -80,4 +80,4 @@ export default {
   font-weight: bold;
 }
 </style>
-
+ -->

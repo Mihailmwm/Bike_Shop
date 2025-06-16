@@ -17,7 +17,6 @@
       <ProfileInfo v-if="currentTab === 'info'" />
       <OrdersList v-if="currentTab === 'orders'" />
       <CartList v-if="currentTab === 'cart'" />
-      <FavoritesList v-if="currentTab === 'favs'" />
     </div>
   </div>
 </template>
@@ -26,7 +25,6 @@
 import ProfileInfo from '@/components/Profile/ProfileInfo.vue'
 import OrdersList from '@/components/Profile/OrdersList.vue'
 import CartList from '@/components/Profile/CartList.vue'
-import FavoritesList from '@/components/Profile/FavoritesList.vue'
 
 export default {
   name: 'ProfilePage',
@@ -45,7 +43,6 @@ export default {
     ProfileInfo,
     OrdersList,
     CartList,
-    FavoritesList,
   },
 }
 </script>

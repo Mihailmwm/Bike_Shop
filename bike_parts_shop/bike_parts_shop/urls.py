@@ -13,9 +13,9 @@ urlpatterns = [
     # Orders ViewSet root
     path('api/', include('bike_parts_shop.api_urls')),
 
-    # Cart, Favorites, Contact, Reviews
+
     path('api/cart/', include('cart.urls')),
-    path('api/favorites/', include('favorites.urls')),
+
     path('api/contact/', include('contact.urls')),
     path('api/', include('orders.urls')),  # reviews
 

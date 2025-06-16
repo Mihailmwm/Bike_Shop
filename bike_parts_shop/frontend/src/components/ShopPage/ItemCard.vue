@@ -16,6 +16,9 @@
       <!-- <p>{{ product.description }}</p> -->
       <hr>
       <p class="price">{{ product.price }} руб.</p>
+      <div class="actions">
+  <button @click="addToCart" class="btn-cart">🛒в корзину</button>
+</div>
     </div>
     <div>
     <router-link :to="{ name: 'ProductPage', params: { id: product.id } }">
@@ -28,6 +31,8 @@
 
 <script>
 import ProductModal from "@/components/ShopPage/ProductModal.vue";
+import axios from 'axios';
+
 
 export default {
   props: {
@@ -36,14 +41,77 @@ export default {
   components: { ProductModal },
   data() {
     return {
+      isFavorite: false,
       showModal: false,
       defaultImage: "https://via.placeholder.com/150",
     };
   },
+
+methods: {
+    async addToCart() {
+      try {
+        const token = localStorage.getItem('access_token');
+        console.log(token)
+        if (!token) {
+          alert('Сначала авторизуйтесь.');
+          return;
+        }
+
+        await axios.post(
+          'http://localhost:8000/api/cart/',
+          {
+            product_id: this.product.id,
+            quantity: 1,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        alert('Товар добавлен в корзину!');
+      } catch (error) {
+        console.error(error);
+        let message = 'Ошибка при добавлении в корзину.';
+        if (error.response?.data?.detail) {
+          message += `\n${error.response.data.detail}`;
+        }
+        alert(message);
+      }
+    },
+  },
+
 };
 </script>
+
+
   
   <style scoped>
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn-cart,
+.btn-fav {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s;
+}
+
+.btn-fav.active {
+  color: red;
+}
+
+.btn-cart:hover,
+.btn-fav:hover {
+  transform: scale(1.1);
+}
 
 p {
     font-family: "Montserrat", sans-serif;

@@ -1,20 +1,18 @@
 <template>
   <div class="profile-container">
     <!-- Профиль и выход -->
-    <div class="section" style="border-top: 2px solid white;
-    border-right: 2px solid white;
-    border-bottom: 2px solid white;">
+    <div class="section" style="border-top:2px solid white;border-right:2px solid white;border-bottom:2px solid white;">
       <h2 class="section-title">Профиль</h2>
-      <div style="">
+      <div>
         <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
         <p><strong>Email:</strong> {{ user.email }}</p>
       </div>
       <button @click="logout" class="logout-button">Выйти</button>
     </div>
-<div class="section" style="border-left: 2px solid white;"></div>
+    <div class="section" style="border-left:2px solid white;"></div>
+
     <!-- Заказы -->
-    <div class="section" style="border-top: 2px solid white; border-right: 2px solid white;
-    border-bottom: 2px solid white;">
+    <div class="section" style="border-top:2px solid white;border-right:2px solid white;border-bottom:2px solid white;">
       <h3 class="section-title">Ваши заказы</h3>
       <div v-if="orders.length === 0" class="empty-text">У вас ещё нет заказов.</div>
       <div v-else class="orders">
@@ -23,7 +21,7 @@
           <p>Статус: {{ order.status.name }}</p>
           <ul class="order-items">
             <li v-for="item in order.items" :key="item.product.id" class="order-item">
-              <img :src="item.product.image" alt="Product image" class="item-image" />
+              <img :src="getImageUrl(item.product.image)" alt="Product image" class="item-image" />
               <span>{{ item.product.name }} × {{ item.quantity }} = {{ item.quantity * item.price }} руб.</span>
             </li>
           </ul>
@@ -31,52 +29,40 @@
         </div>
       </div>
     </div>
-<div class="section" style="border-left: 2px solid white;"></div>
-<!-- Отзывы -->
-<div class="section"  style="border-top: 2px solid white; border-right: 2px solid white;
-    border-bottom: 2px solid white;">
-  <h3 class="section-title">Ваши отзывы</h3>
-  <div v-if="reviews.length === 0" class="empty-text">Вы ещё не оставили отзывов.</div>
-  <div v-else class="reviews">
-    <div v-for="review in reviews" :key="review.id" class="review-card">
-      <div class="review-product-info" style="display: flex; align-items: center; gap: 12px;">
-        <img
-          v-if="review.product_image"
-          :src="getImageUrl(review.product_image)"
-          alt="Product Image"
-          class="review-product-image"
-          style="width: 128px; height: 128px; object-fit: cover; "
-        />
-        <strong>{{ review.product_name || (review.product && review.product.name) }}</strong>
-      </div>
-      <p class="review-text">“{{ review.comment || review.text }}”</p>
-      <p class="review-rating" style="  color: #2546F3;">Оценка: {{ review.rating }} / 5</p>
-      <p class="review-date">{{ formatDate(review.created_at) }}</p>
-    </div>
-  </div>
-</div>
+    <div class="section" style="border-left:2px solid white;"></div>
 
-<div class="section" style="border-left: 2px solid white;"></div>
+    <!-- Отзывы -->
+    <div class="section" style="border-top:2px solid white;border-right:2px solid white;border-bottom:2px solid white;">
+      <h3 class="section-title">Ваши отзывы</h3>
+      <div v-if="reviews.length === 0" class="empty-text">Вы ещё не оставили отзывов.</div>
+      <div v-else class="reviews">
+        <div v-for="review in reviews" :key="review.id" class="review-card">
+          <div class="review-product-info">
+            <img
+              v-if="review.product_image"
+              :src="getImageUrl(review.product_image)"
+              alt="Product Image"
+              class="review-product-image"
+            />
+            <strong>{{ review.product_name }}</strong>
+          </div>
+          <p class="review-text">“{{ review.comment }}”</p>
+          <p class="review-rating">Оценка: {{ review.rating }} / 5</p>
+          <p class="review-date">{{ formatDate(review.created_at) }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="section" style="border-left:2px solid white;"></div>
 
     <!-- Корзина -->
-    <div class="section"  style="border-top: 2px solid white; border-right: 2px solid white;
-    border-bottom: 2px solid white;">
+    <div class="section" style="border-top:2px solid white;border-right:2px solid white;border-bottom:2px solid white;">
       <h3 class="section-title">Корзина</h3>
       <div v-if="cart.length === 0" class="empty-text">Ваша корзина пуста.</div>
       <div v-else class="item-grid">
-        <ItemCard v-for="item in cart" :key="item.product.id" :product="item.product" />
-      </div>
-    </div>
-
-    <div class="section" style="border-left: 2px solid white;"></div>
-
-    <!-- Избранное -->
-    <div class="section"  style="border-top: 2px solid white; border-right: 2px solid white;
-    border-bottom: 2px solid white;">
-      <h3 class="section-title">Избранное</h3>
-      <div v-if="favorites.length === 0" class="empty-text">У вас нет понравившихся товаров.</div>
-      <div v-else class="item-grid">
-        <ItemCard v-for="product in favorites" :key="product.id" :product="product" />
+        <div v-for="item in cart" :key="item.product.id" class="cart-item">
+          <ItemCard :product="item.product" />
+          <button @click="removeCartItem(item.product.id)" class="remove-btn">Удалить</button>
+        </div>
       </div>
     </div>
   </div>
@@ -87,6 +73,7 @@
 import api from '@/axios'
 import ItemCard from '@/components/ShopPage/ItemCard.vue'
 
+
 export default {
   name: 'UserProfile',
   components: { ItemCard },
@@ -95,11 +82,20 @@ export default {
       user: { username: '', email: '' },
       orders: [],
       cart: [],
-      favorites: [],
       reviews: [],
     }
   },
   methods: {
+
+    async removeCartItem(productId) {
+    try {
+      await api.delete(`/api/cart/item/${productId}/`, this.authHeader());
+      this.cart = this.cart.filter(i => i.product.id !== productId);
+    } catch {
+      alert('Не удалось удалить из корзины.');
+    }
+  },
+
     getImageUrl(path) {
     if (!path) return ''
     // Пример: если backend работает на порту 8000
@@ -133,14 +129,6 @@ export default {
         this.cart = []
       }
     },
-    async fetchFavorites() {
-      try {
-        const res = await api.get('/api/favorites/', this.authHeader())
-        this.favorites = res.data
-      } catch {
-        this.favorites = []
-      }
-    },
     async fetchReviews() {
       try {
         const res = await api.get('/api/reviews/user/', this.authHeader())
@@ -171,7 +159,6 @@ export default {
     await this.fetchUser()
     this.fetchOrders()
     this.fetchCart()
-    this.fetchFavorites()
     this.fetchReviews()
   },
 }
@@ -180,6 +167,19 @@ export default {
 
 <style scoped>
 
+.fav-item {
+  position: relative;
+}
+.remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+}
 
 
 .review-product-info {
