@@ -89,7 +89,7 @@ export default {
 
     async removeCartItem(productId) {
     try {
-      await api.delete(`/api/cart/item/${productId}/`, this.authHeader());
+      await api.delete(`/api/cart/${productId}/`, this.authHeader())
       this.cart = this.cart.filter(i => i.product.id !== productId);
     } catch {
       alert('Не удалось удалить из корзины.');

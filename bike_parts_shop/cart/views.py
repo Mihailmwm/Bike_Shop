@@ -83,11 +83,11 @@ class CartView(APIView):
 
         return Response({'detail': 'Добавлено в корзину'}, status=status.HTTP_201_CREATED)
 
-    # def delete(self, request, product_pk=None):
-    #     # ожидаем URL /api/cart/{product_pk}/
-    #     try:
-    #         item = CartItem.objects.get(user=request.user, product_id=product_pk)
-    #         item.delete()
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
-    #     except CartItem.DoesNotExist:
-    #         return Response({'detail': 'Элемент не найден'}, status=status.HTTP_404_NOT_FOUND)
+    def delete(self, request, product_pk=None):
+        # ожидаем URL /api/cart/{product_pk}/
+        try:
+            item = CartItem.objects.get(user=request.user, product_id=product_pk)
+            item.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except CartItem.DoesNotExist:
+            return Response({'detail': 'Элемент не найден'}, status=status.HTTP_404_NOT_FOUND)

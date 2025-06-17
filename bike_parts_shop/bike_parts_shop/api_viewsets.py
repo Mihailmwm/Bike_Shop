@@ -75,7 +75,6 @@ class SingleActionViewSet(viewsets.ViewSet):
 class CartViewSet(SingleActionViewSet):
     view = CartView
 
-
 class ContactViewSet(SingleActionViewSet):
     view = ContactMessageView
 

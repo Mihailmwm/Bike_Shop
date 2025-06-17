@@ -1,9 +1,8 @@
 # product/serializers.py
 
-# -----------------------------------------------------
 
 from rest_framework import serializers
-from .models import Product, Category, ProductImage  # Добавил ProductImage
+from .models import Product, Category, ProductImage  
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -18,7 +17,7 @@ class ProductImageSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
-    images = ProductImageSerializer(many=True, read_only=True)  # Изменил image → images
+    images = ProductImageSerializer(many=True, read_only=True)  
 
     class Meta:
         model = Product
