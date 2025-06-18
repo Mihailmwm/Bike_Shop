@@ -33,7 +33,7 @@ class OrderItemsInline(admin.TabularInline):
 
 @admin.register(Orders)
 class OrdersAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "status", "payment_method", "delivery_method", "created_at", "total_order_price")
+    list_display = ("id", "user", "status", "payment_method", "delivery_method", "created_at", "total_order_price", "product_list")
     list_display_links = ("id", "user")
     list_filter = ("status", "payment_method", "delivery_method", "created_at")
     search_fields = ("user__username",)
@@ -45,6 +45,15 @@ class OrdersAdmin(admin.ModelAdmin):
     @admin.display(description="Сумма заказа")
     def total_order_price(self, obj):
         return obj.get_total_price()
+    
+    @admin.display(description="Товары")
+    def product_list(self, obj):
+        # return ", ".join(p.name for p in obj.products.all())
+        return ", ".join(str(item.product.name) for item in obj.items.all())
+    # -----------------------------------------------------------------------------------
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.prefetch_related('items__product')
 
     def get_urls(self):
         from django.urls import path

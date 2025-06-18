@@ -15,5 +15,23 @@
         <li>Нет товаров </li>
       {% endfor %}
     </ul>
+    <ul>
+              {% for name, count in category_counts_list %}
+          <tr>
+            <td style="border: 1px solid #ccc; padding: 8px;">{{ name }}</td>
+            <td style="border: 1px solid #ccc; padding: 8px;">{{ count }}</td>
+          </tr>
+        {% endfor %}
+    </ul>
+    {% if has_cheap_products %}
+  <div style="color: green; font-weight: bold;">
+    ✅ Есть товары дешевле 500 ₽
+  </div>
+{% else %}
+  <div style="color: red; font-weight: bold;">
+    ❌ Нет товаров дешевле 500 ₽
+  </div>
+{% endif %}
+
   </div>
 {% endblock %}

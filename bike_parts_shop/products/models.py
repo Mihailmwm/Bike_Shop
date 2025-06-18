@@ -36,6 +36,9 @@ class ProductManager(models.Manager):
         """Возвращает количество товаров в каждой категории"""
         return self.values('category__name').annotate(count=Count('id')).order_by('-count')
     
+    def category_counts_list(self):
+        """Возвращает количество товаров в каждой категории в виде списка кортежей (category_name, count)."""
+        return self.values_list('category__name').annotate(count=Count('id')).order_by('-count')
 
 class Category(models.Model):
     name = models.CharField(max_length=255, verbose_name="Название категории")

@@ -76,12 +76,16 @@ class ProductAdmin(admin.ModelAdmin):
         category_counts = Product.objects.values('category__name').annotate(
             count=Count('id')
         ).order_by('-count')
+        category_counts_list = [(item['category__name'], item['count']) for item in category_counts]
+        has_cheap_products = Product.objects.filter(price__lt=500).exists()
 
         extra_context = extra_context or {}
         extra_context.update({
             'avg_price': stats['avg_price'],
             'total_value': stats['total_value'],
             'category_counts': category_counts,
+            'category_counts_list': category_counts_list,
+            'has_cheap_products': has_cheap_products,
         })
 
         return super().changelist_view(request, extra_context=extra_context)
@@ -135,7 +139,7 @@ class ProductAdmin(admin.ModelAdmin):
             "admin:product_download_pdf", args=[obj.id]
         )
         return format_html(
-            '<a href="{}" class="button">📄 Скачать PDF</a>',
+            '<a href="{}" class="button"> Скачать PDF</a>',
             url
         )
 

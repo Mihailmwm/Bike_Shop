@@ -92,6 +92,12 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'DEBUG',
     },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',  # Уровень вывода
+        },
+    },
 }
 
 ROOT_URLCONF = 'bike_parts_shop.urls'

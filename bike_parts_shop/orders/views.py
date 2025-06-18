@@ -16,6 +16,10 @@ def order_list(request):
 
 def order_detail(request, order_id):
     order = Orders.objects.get(id=order_id)
+
+    for product in order.products.all():
+        print(product.name)
+        
     return render(request, 'orders/order_detail.html', {'order': order})
 
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):

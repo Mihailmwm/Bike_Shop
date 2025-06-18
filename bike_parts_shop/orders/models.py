@@ -46,7 +46,10 @@ class Orders(models.Model):
     delivery_method = models.ForeignKey(DeliveryMethods, on_delete=models.PROTECT, null=True, verbose_name="Метод доставки")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
-    
+    products = models.ManyToManyField(Product,through='OrderItems',related_name='orders',verbose_name='Товары')
+    attached_file = models.FileField(upload_to='orders/files/',blank=True,null=True,verbose_name='Файл к заказу')
+    tracking_url = models.URLField(max_length=200,blank=True,null=True,verbose_name='Ссылка на отслеживание')
+
     class Meta:
         verbose_name = "Заказ"
         verbose_name_plural = "Заказы"
